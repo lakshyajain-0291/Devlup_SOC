@@ -69,25 +69,15 @@ const MOCK_PROJECTS: Project[] = [
 
 // Parse CSV data into structured format
 function parseCSV(csvText: string): any[] {
-  // console.log('===== CSV PARSING DEBUG =====');
-  // console.log('Raw CSV text length:', csvText.length);
-  // console.log('First 100 characters of CSV:', csvText.substring(0, 100));
-  
   // Split the CSV text into rows, handling '\r' characters
   const rows = csvText.split(/\r?\n/);
-  // console.log('Number of rows after initial split:', rows.length);
   
   if (rows.length <= 1) {
-    console.warn('Not enough rows in CSV data');
     return [];
   }
   
-  // Log the header row to see if it's correct
-  // console.log('Header row:', rows[0]);
-  
   // Check for potential tab separation instead of commas
   if (rows[0].includes('\t')) {
-    // console.log('DETECTED TAB DELIMITED CSV instead of comma delimited');
     return parseTabSeparatedValues(csvText);
   }
   
@@ -101,26 +91,19 @@ function parseCSV(csvText: string): any[] {
       const char = line[i];
       
       if (char === '"') {
-        // Toggle the inQuotes state
         inQuotes = !inQuotes;
-        // Add the quote character to preserve it
         current += char;
       } else if (char === ',' && !inQuotes) {
-        // End of field found - push to result and reset current
         result.push(current);
         current = '';
       } else {
-        // Add character to current field
         current += char;
       }
     }
     
-    // Add the last field
     result.push(current);
     
-    // Clean up quotes from the fields
     return result.map(field => {
-      // Remove surrounding quotes if present
       if (field.startsWith('"') && field.endsWith('"')) {
         return field.substring(1, field.length - 1);
       }
@@ -128,18 +111,15 @@ function parseCSV(csvText: string): any[] {
     });
   }
   
-  // Extract headers (assumes the first row is the header row)
   const headers = parseLine(rows[0]);
   const data = [];
   
-  // Process data rows
   for (let i = 1; i < rows.length; i++) {
-    if (!rows[i].trim()) continue; // Skip empty rows
+    if (!rows[i].trim()) continue;
     
     const rowData = parseLine(rows[i]);
     const rowObject: Record<string, string> = {};
     
-    // Map each value to its corresponding header
     for (let j = 0; j < headers.length; j++) {
       rowObject[headers[j].trim()] = j < rowData.length ? rowData[j] : '';
     }
@@ -152,27 +132,23 @@ function parseCSV(csvText: string): any[] {
 
 // Function to parse tab-separated values (TSV)
 function parseTabSeparatedValues(tsvText: string): any[] {
-  // Split the TSV text into rows
   const rows = tsvText.split(/\r?\n/);
   
   if (rows.length <= 1) {
     return [];
   }
   
-  // Extract headers
   const headers = rows[0].split('\t').map(header => header.trim());
   
   const data = [];
   
-  // Process data rows
   for (let i = 1; i < rows.length; i++) {
-    if (!rows[i].trim()) continue; // Skip empty rows
+    if (!rows[i].trim()) continue;
     
     const values = rows[i].split('\t');
     
     const rowObject: Record<string, string> = {};
     
-    // Map each value to its corresponding header
     for (let j = 0; j < headers.length; j++) {
       rowObject[headers[j]] = j < values.length ? values[j].trim() : '';
     }
@@ -186,23 +162,17 @@ function parseTabSeparatedValues(tsvText: string): any[] {
 // Fetch projects from Google Sheets using CSV export
 export const fetchProjects = async (): Promise<Project[]> => {
   try {
-    
-    // Construct the CSV export URL
     const csvUrl = import.meta.env.VITE_GOOGLE_SHEETS_CSV_URL || "";
 
-    // Fetch CSV data using axios
     const response = await axios.get(csvUrl);
     
     const parsedData = parseCSV(response.data);
     
     if (!parsedData || parsedData.length === 0) {
-      console.error('No project data found in the parsed CSV');
       throw new Error('No project data found');
     }
     
-    // Map the parsed data to Project objects according to the actual CSV column structure
     const projectsData = parsedData.map((item, index) => {
-      // Parse tech stack from comma-separated string
       const techStack = item['Tech Stack (Comma separated)'] || item['Tech Stack (Comma rated)'] ? 
         (item['Tech Stack (Comma separated)'] || item['Tech Stack (Comma rated)']).split(',').map((tech: string) => {
           return tech.trim().replace(/\b\w/g, char => char.toUpperCase());
@@ -240,10 +210,6 @@ export const fetchProjects = async (): Promise<Project[]> => {
     
     return projectsData;
   } catch (error) {
-    console.error('Error fetching projects:', error);
-    
-    // Fall back to mock data if API call fails
-    console.warn('Falling back to mock data');
     return MOCK_PROJECTS;
   }
 };
