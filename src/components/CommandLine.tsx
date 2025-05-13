@@ -14,7 +14,7 @@ const CommandLine: React.FC<CommandLineProps> = ({ onCommand, isProcessing }) =>
   const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { projects } = useTerminal();
+  const { projects, setSearchQuery, setTechFilter } = useTerminal();
 
   useEffect(() => {
     // Focus input on mount and when processing completes
@@ -84,6 +84,34 @@ const CommandLine: React.FC<CommandLineProps> = ({ onCommand, isProcessing }) =>
         setInput('');
         setHistoryIndex(-1);
         return;
+      }
+
+      // Search command
+      if (parts[0] === 'search' || parts[0] === 's') {
+        const query = parts.slice(1).join(' ');
+        if (query) {
+          setSearchQuery(query);
+          setTimeout(() => {
+            navigate('/projects');
+          }, 500);
+          setInput('');
+          setHistoryIndex(-1);
+          return;
+        }
+      }
+      
+      // Filter command
+      if (parts[0] === 'filter' || parts[0] === 'f') {
+        const tech = parts.slice(1).join(' ');
+        if (tech) {
+          setTechFilter(tech);
+          setTimeout(() => {
+            navigate('/projects');
+          }, 500);
+          setInput('');
+          setHistoryIndex(-1);
+          return;
+        }
       }
       
       // For other commands, we already called onCommand earlier
