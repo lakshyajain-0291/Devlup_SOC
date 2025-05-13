@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Github } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -17,10 +18,19 @@ const Footer = () => {
             <span className="text-sm">DevlUp Labs Summer of Code &copy; {currentYear}</span>
           </div>
           
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 items-center">
             <Link to="/contact" className="text-terminal-dim hover:text-terminal-text transition-colors text-sm">
               Contact Us
             </Link>
+            <a 
+              href="https://github.com/lakshyajain-0291/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-terminal-dim hover:text-terminal-text transition-colors text-sm flex items-center"
+            >
+              <Github size={16} className="mr-1" />
+              GitHub
+            </a>
           </div>
         </div>
       </div>
