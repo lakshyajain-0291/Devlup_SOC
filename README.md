@@ -93,7 +93,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [DevlUp Labs](https://devluplabs.tech/#/) for organizing the Summer of Code program
 - All mentors who contribute their time to guide students
-- PES University for supporting open source initiatives
+- IIT J for supporting open source initiatives
 
 ---
 
