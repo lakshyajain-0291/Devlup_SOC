@@ -54,16 +54,16 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
   // Fetch projects on mount
   useEffect(() => {
     const loadProjects = async () => {
-      console.log('Starting to fetch projects...');
+      // console.log('Starting to fetch projects...');
       setLoading(true);
       
       try {
-        console.log('Calling fetchProjects()...');
+        // console.log('Calling fetchProjects()...');
         const data = await fetchProjects();
-        console.log('Projects fetched successfully:', data);
+        // console.log('Projects fetched successfully:', data);
         
         if (data.length === 0) {
-          console.warn('No projects were fetched, using mock data instead');
+          // console.warn('No projects were fetched, using mock data instead');
           addToHistory({ 
             type: 'error', 
             content: 'Unable to fetch live project data. Displaying mock projects instead.' 
@@ -71,16 +71,16 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
         }
         
         setProjects(data);
-        console.log('Projects state updated with:', data);
+        // console.log('Projects state updated with:', data);
       } catch (error) {
-        console.error('Failed to fetch projects:', error);
+        // console.error('Failed to fetch projects:', error);
         addToHistory({ 
           type: 'error', 
           content: 'Failed to fetch projects. Please try again later.' 
         });
       } finally {
         setLoading(false);
-        console.log('Project loading completed, loading state set to false');
+        // console.log('Project loading completed, loading state set to false');
       }
     };
 
@@ -295,7 +295,7 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
     try {
       await processCommand(command);
     } catch (error) {
-      console.error('Error executing command:', error);
+      // console.error('Error executing command:', error);
       addToHistory({ 
         type: 'error', 
         content: 'An error occurred while processing your command.' 
@@ -315,7 +315,7 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
       });
       return Promise.resolve();
     } catch (error) {
-      console.error('Error with application process:', error);
+      // console.error('Error with application process:', error);
       addToHistory({ 
         type: 'error', 
         content: 'There was an issue opening the application form. Please try again.' 
