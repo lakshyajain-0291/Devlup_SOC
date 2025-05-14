@@ -74,7 +74,7 @@ const Projects = () => {
                 <select
                   value={techFilter || ''}
                   onChange={(e) => setTechFilter(e.target.value || null)}
-                  className="w-full px-3 py-2 bg-terminal-dim/20 border border-terminal-dim/50 rounded focus:outline-none focus:border-terminal-accent appearance-none"
+                  className="w-full px-3 py-2 bg-terminal-dim/20 border border-terminal-dim/50 rounded focus:outline-none focus:bg-terminal appearance-none"
                 >
                   <option value="">All Technologies</option>
                   {allTechStacks.map(tech => (

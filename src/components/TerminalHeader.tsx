@@ -56,14 +56,14 @@ const TerminalHeader: React.FC<TerminalHeaderProps> = ({ title }) => {
         </div>
         
         <div className="group relative cursor-pointer" onClick={handleMaximize}>
-          <Circle size={12} className="text-terminal-success" fill="#3FB950" />
+          <Circle size={12} className="text-terminal-success" fill="#58A6FF" />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <Maximize2 size={8} className="text-black" />
           </div>
           <span className="sr-only">Toggle Fullscreen</span>
         </div>
       </div>
-      <div className="flex-1 text-center text-xs">{title}</div>
+      <div className="flex-1 font-bold text-center text-xs">{title}</div>
     </div>
   );
 };
