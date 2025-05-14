@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Github } from 'lucide-react';
+import { Github ,Mail } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,7 +19,11 @@ const Footer = () => {
           </div>
           
           <div className="flex space-x-4 items-center">
-            <Link to="/contact" className="text-terminal-dim hover:text-terminal-text transition-colors text-sm">
+            <Link 
+              to="/contact" 
+              className="text-terminal-dim hover:text-terminal-text transition-colors text-sm flex items-center"
+            >
+              <Mail className="mr-0.5 h-4 w-4" />
               Contact Us
             </Link>
             <a 

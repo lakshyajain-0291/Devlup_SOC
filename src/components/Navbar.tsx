@@ -24,7 +24,7 @@ const Navbar = () => {
           </Link>
         </div>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex font-bold items-center space-x-4">
           <Link to="/" className={`${isActive('/')} transition-colors flex items-center`}>
             <Home size={16} className="mr-1" />
             <span>Home</span>
