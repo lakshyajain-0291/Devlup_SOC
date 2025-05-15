@@ -5,6 +5,7 @@ import { Project } from '../components/ProjectCard';
 import { ContributorData } from '../components/ContributorForm';
 import ProjectCard from '../components/ProjectCard';
 import ContributorForm from '../components/ContributorForm';
+import { getTerminalStats } from '../services/analyticsService'; // Import analytics functions
 
 // Update the CommandResponse type in the file
 interface TerminalContextType {
@@ -20,7 +21,7 @@ interface TerminalContextType {
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   techFilter: string | null;
   setTechFilter: React.Dispatch<React.SetStateAction<string | null>>;
-  addToTerminalHistory: (command: string) => void; // New function to add raw commands to history
+  addToTerminalHistory: (command: string) => void;
 }
 
 const TerminalContext = createContext<TerminalContextType | undefined>(undefined);
@@ -99,12 +100,14 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
   const processCommand = async (command: string) => {
     const commandLower = command.toLowerCase().trim();
     const parts = commandLower.split(' ');
+    const baseCommand = parts[0];
+    const args = parts.slice(1);
     
     // Add the command to history first
     addToHistory({ type: 'command', content: command });
     
     // Process the command
-    switch(parts[0]) {
+    switch(baseCommand) {
       case 'help':
       case 'h':
       case '?':
@@ -118,6 +121,7 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
   search [query], s [query]  Search for projects
   filter [tech], f [tech]    Filter projects by technology
   view [id], v [id], [id]    View details of a specific project
+  stats [options]          View site analytics data
   apply, a                 Open the contributor application form
   mentors, m               Show all project mentors`
         });
@@ -137,6 +141,46 @@ export const TerminalProvider: React.FC<TerminalProviderProps> = ({ children }) 
           type: 'response', 
           content: 'Showing all projects. Type "search [query]" to search projects or "filter [technology]" to filter by technology.' 
         });
+        break;
+
+      // Stats command handler
+      case 'stats':
+        if (args.includes('--view') && (args.includes('analytics') || args.includes('dashboard'))) {
+          // Redirect to analytics dashboard
+          window.location.href = '/stats';
+          addToHistory({ 
+            type: 'response', 
+            content: 'Opening analytics dashboard...' 
+          });
+        } else if (args.includes('--live')) {
+          // Display live stats with refresh
+          addToHistory({ 
+            type: 'response', 
+            content: 'Live analytics mode. Stats will update every 10 seconds. Press Ctrl+C to exit.' 
+          });
+          
+          // Setup a temporary interval to update stats (will stop when user navigates away)
+          const updateStats = async () => {
+            const statsText = await getTerminalStats();
+            addToHistory({ 
+              type: 'code', 
+              content: statsText 
+            });
+          };
+          
+          // Initial update
+          await updateStats();
+          
+          // Setup interval (we don't need to clear it since it's just for demo)
+          setInterval(updateStats, 10000);
+        } else {
+          // Display basic stats
+          const statsText = await getTerminalStats();
+          addToHistory({ 
+            type: 'code', 
+            content: statsText 
+          });
+        }
         break;
         
       case 'list':
