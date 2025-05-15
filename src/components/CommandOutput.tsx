@@ -1,8 +1,7 @@
-
 import React from 'react';
 
 export interface CommandResponse {
-  type: 'command' | 'response' | 'error' | 'project' | 'mentor' | 'form' | 'help' | 'success';
+  type: 'command' | 'response' | 'error' | 'project' | 'mentor' | 'form' | 'help' | 'success' | 'code';
   content: React.ReactNode;
 }
 
@@ -29,6 +28,8 @@ const CommandOutput: React.FC<CommandOutputProps> = ({ output }) => {
         return 'text-terminal-accent';
       case 'success':
         return 'text-terminal-success';
+      case 'code':
+        return 'text-terminal-accent font-mono text-sm';
       default:
         return 'text-terminal-text';
     }
