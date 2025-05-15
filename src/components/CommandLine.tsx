@@ -14,7 +14,22 @@ const CommandLine: React.FC<CommandLineProps> = ({ onCommand, isProcessing }) =>
   const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { projects, setSearchQuery, setTechFilter } = useTerminal();
+  const { projects, setSearchQuery, setTechFilter, checkKonamiCode } = useTerminal();
+
+  // Set up global key event listener for Konami code
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Pass the key to the Konami code checker
+      checkKonamiCode(e.key);
+    };
+    
+    // Add global event listener
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    
+    return () => {
+      window.removeEventListener('keydown', handleGlobalKeyDown);
+    };
+  }, [checkKonamiCode]);
 
   useEffect(() => {
     // Focus input on mount and when processing completes
