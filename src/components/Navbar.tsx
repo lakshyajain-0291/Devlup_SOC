@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Briefcase, User, BarChart } from 'lucide-react';
+import { Home, Briefcase, User, BarChart, Phone } from 'lucide-react';
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Navbar = () => {
   const location = useLocation();
@@ -24,22 +30,82 @@ const Navbar = () => {
         </div>
         
         <div className="flex font-bold items-center space-x-4">
-          <Link to="/" className={`${isActive('/')} transition-colors flex items-center`}>
-            <Home size={16} className="mr-1" />
-            <span>Home</span>
-          </Link>
-          <Link to="/projects" className={`${isActive('/projects')} transition-colors flex items-center`}>
-            <Briefcase size={16} className="mr-1" />
-            <span>Projects</span>
-          </Link>
-          <Link to="/apply" className={`${isActive('/apply')} transition-colors flex items-center`}>
-            <User size={16} className="mr-1" />
-            <span>Apply</span>
-          </Link>
-          <Link to="/stats" className={`${isActive('/stats')} transition-colors flex items-center`}>
-            <BarChart size={16} className="mr-1" />
-            <span>Stats</span>
-          </Link>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/" className={`${isActive('/')} transition-colors flex items-center`}>
+                  <Home size={16} className="mr-1" />
+                  <span>Home</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-1">
+                  <span>Home</span>
+                  <kbd className="px-1.5 py-0.5 text-xs bg-terminal-dim rounded">Alt+H</kbd>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/projects" className={`${isActive('/projects')} transition-colors flex items-center`}>
+                  <Briefcase size={16} className="mr-1" />
+                  <span>Projects</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-1">
+                  <span>Projects</span>
+                  <kbd className="px-1.5 py-0.5 text-xs bg-terminal-dim rounded">Alt+P</kbd>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/apply" className={`${isActive('/apply')} transition-colors flex items-center`}>
+                  <User size={16} className="mr-1" />
+                  <span>Apply</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-1">
+                  <span>Apply</span>
+                  <kbd className="px-1.5 py-0.5 text-xs bg-terminal-dim rounded">Alt+A</kbd>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/stats" className={`${isActive('/stats')} transition-colors flex items-center`}>
+                  <BarChart size={16} className="mr-1" />
+                  <span>Stats</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-1">
+                  <span>Analytics</span>
+                  <kbd className="px-1.5 py-0.5 text-xs bg-terminal-dim rounded">Alt+S</kbd>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/contact" className={`${isActive('/contact')} transition-colors flex items-center hidden md:flex`}>
+                  <Phone size={16} className="mr-1" />
+                  <span>Contact</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-1">
+                  <span>Contact</span>
+                  <kbd className="px-1.5 py-0.5 text-xs bg-terminal-dim rounded">Alt+C</kbd>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </nav>
