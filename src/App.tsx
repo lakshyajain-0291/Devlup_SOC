@@ -9,9 +9,11 @@ import NotFound from "./pages/NotFound";
 import ProjectDetail from "./pages/ProjectDetail";
 import ApplyPage from "./pages/ApplyPage";
 import Contact from "./pages/Contact";
+import Stats from "./pages/Stats";
 import { TerminalProvider } from "./context/TerminalContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import AnalyticsTracker from "./components/AnalyticsTracker";
 
 const queryClient = new QueryClient();
 
@@ -31,12 +33,15 @@ const App = () => (
                 <Route path="/projects/:projectId" element={<ProjectDetail />} />
                 <Route path="/apply" element={<ApplyPage />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/stats" element={<Stats />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
             <Footer />
           </div>
+          {/* Add analytics tracker to record page visits */}
+          <AnalyticsTracker />
         </BrowserRouter>
       </TerminalProvider>
     </TooltipProvider>
