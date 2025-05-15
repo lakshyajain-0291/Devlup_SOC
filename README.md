@@ -41,6 +41,7 @@ A terminal-themed web application for the DevlUp Labs Summer of Code program tha
 - **📂 Project Exploration**: Browse, search, and filter available open source projects
 - **👨‍🏫 Mentor Directory**: Access information about project mentors and their expertise
 - **📝 Interactive Application**: Apply to projects directly through the interface
+- **📊 Analytics Dashboard**: Track site usage with interactive visualizations
 - **📱 Responsive Design**: Works seamlessly across desktop and mobile devices
 
 ## 💻 Terminal Commands
@@ -54,7 +55,21 @@ A terminal-themed web application for the DevlUp Labs Summer of Code program tha
 | `filter [tech]` | Filter projects by technology |
 | `view [id]` | View details of a specific project |
 | `mentors` | Show all project mentors |
+| `stats` | Display site analytics summary |
+| `stats --view analytics` | Open the full analytics dashboard |
+| `stats --live` | Show real-time updating analytics in terminal |
 | `apply` | Open the contributor application form |
+
+## 📊 Analytics System
+
+The site includes a comprehensive analytics system to track visitor engagement:
+
+- **Visitor Tracking**: Automatically captures page views and unique visitors
+- **Interactive Dashboard**: Visual representation of site traffic and popular pages
+- **Time-Based Analysis**: View trends by hour, day, week, or month
+- **Page Popularity**: Identify which projects and pages are most visited
+- **Terminal Integration**: Access analytics directly through terminal commands
+- **Google Sheets Backend**: All data is securely stored in a Google Sheet
 
 ## 🛠️ Tech Stack
 
@@ -65,6 +80,7 @@ A terminal-themed web application for the DevlUp Labs Summer of Code program tha
   - React 18 with TypeScript
   - Tailwind CSS with custom terminal theme
   - Shadcn/UI for modern component design
+  - Recharts for data visualization
 
 - **Build & Development**: 
   - Vite for fast development experience
@@ -72,7 +88,9 @@ A terminal-themed web application for the DevlUp Labs Summer of Code program tha
 
 - **Integration & Data**: 
   - Google Sheets API for project data
+  - Google Apps Script for analytics data collection
   - React Hook Form with validation
+  - Framer Motion for animations
 
 - **Deployment**: 
   - Vercel for CI/CD and hosting
@@ -99,15 +117,24 @@ A terminal-themed web application for the DevlUp Labs Summer of Code program tha
      ```
      VITE_GOOGLE_SHEETS_CSV_URL=your_csv_url_here
      ```
+   - Add your Analytics Script URL (for tracking):
+     ```
+     VITE_ANALYTICS_SCRIPT_URL=your_analytics_script_url_here
+     ```
 
-4. **Start development server**
+4. **Google Apps Script Setup**
+   - Create a new Apps Script in your Google Sheet
+   - Add the analytics handler script (see documentation)
+   - Deploy as web app and copy the URL to your `.env.local`
+
+5. **Start development server**
    ```bash
    npm run dev
    # or
    bun dev
    ```
 
-5. **Build for production**
+6. **Build for production**
    ```bash
    npm run build
    # or
@@ -134,6 +161,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - All mentors who contribute their time to guide students
 - [Shadcn/UI](https://ui.shadcn.com/) for the UI components
 - [Lucide Icons](https://lucide.dev/) for beautiful icon set
+- [Recharts](https://recharts.org/) for visualization components
+- [Framer Motion](https://www.framer.com/motion/) for animations
 
 ---
 
