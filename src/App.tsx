@@ -14,6 +14,7 @@ import { TerminalProvider } from "./context/TerminalContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AnalyticsTracker from "./components/AnalyticsTracker";
+import ShortcutProvider from "./components/ShortcutProvider";
 
 const queryClient = new QueryClient();
 
@@ -24,24 +25,26 @@ const App = () => (
       <Sonner />
       <TerminalProvider>
         <BrowserRouter>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/projects/:projectId" element={<ProjectDetail />} />
-                <Route path="/apply" element={<ApplyPage />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/stats" element={<Stats />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-          {/* Add analytics tracker to record page visits */}
-          <AnalyticsTracker />
+          <ShortcutProvider>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/projects/:projectId" element={<ProjectDetail />} />
+                  <Route path="/apply" element={<ApplyPage />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/stats" element={<Stats />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+            {/* Add analytics tracker to record page visits */}
+            <AnalyticsTracker />
+          </ShortcutProvider>
         </BrowserRouter>
       </TerminalProvider>
     </TooltipProvider>
