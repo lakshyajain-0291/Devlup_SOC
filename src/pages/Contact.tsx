@@ -18,7 +18,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="font-medium text-terminal-accent">What is the application deadline?</h3>
-                <p className="text-terminal-dim mt-1">The application deadline for the current cycle is not decided yet but we suggest you fill the form asap.</p>
+                <p className="text-terminal-dim mt-1">The application deadline for the current cycle will be notified via mail but we suggest you fill the form asap.</p>
               </div>
               <div>
                 <h3 className="font-medium text-terminal-accent">Do I need prior open source experience?</h3>

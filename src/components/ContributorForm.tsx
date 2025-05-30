@@ -63,7 +63,7 @@ const ContributorForm: React.FC<ContributorFormProps> = ({ projects, initialProj
       </div>
       
       <p className="text-terminal-dim text-sm text-center">
-        The form will open in a new tab. Please make sure to mention projectyou want to apply to in the form.
+        The form will open in a new tab. Please make sure to mention project you want to apply to in the form.
       </p>
     </div>
   );
