@@ -27,7 +27,7 @@ const Footer = () => {
               Contact Us
             </Link>
             <a 
-              href="https://github.com/lakshyajain-0291/Devlup_SOC" 
+              href="https://github.com/devlup-labs" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-terminal-dim hover:text-terminal-text transition-colors text-sm flex items-center"
