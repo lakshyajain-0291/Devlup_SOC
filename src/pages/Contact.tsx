@@ -97,7 +97,26 @@ const Contact = () => {
                     </div>
                   </div>
                 </div>
-                
+
+                <div>
+                  <h2 className="text-xl font-semibold text-terminal-text mb-3">To Contribute</h2>
+                  <div className="space-y-3">
+                    <div className="flex items-center text-terminal-dim">
+                      <Github className="mr-2 h-5 w-5 text-terminal-accent" />
+                      <a 
+                        href="https://github.com/lakshyajain-0291/Devlup_SOC" 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-terminal-text flex items-center"
+                      >
+                        lakshyajain-0291/Devlup_SOC
+                        <ExternalLink className="ml-1 h-3 w-3" />
+                      </a>
+                    </div>
+                    
+                  </div>
+                </div>
+
               </div>
               
             </div>
