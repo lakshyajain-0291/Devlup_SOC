@@ -398,7 +398,7 @@ const AnalyticsDashboard: React.FC = () => {
         </Card>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
         <motion.div
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -468,7 +468,7 @@ const AnalyticsDashboard: React.FC = () => {
           </Card>
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           initial={{ x: 20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.7 }}
@@ -517,8 +517,8 @@ const AnalyticsDashboard: React.FC = () => {
               )}
             </CardContent>
           </Card>
-        </motion.div>
-      </div>
+        </motion.div> */}
+      {/* </div> */}
 
       <motion.div
         initial={{ y: 20, opacity: 0 }}
