@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Briefcase, User, BarChart, Phone } from 'lucide-react';
+import { useTerminal } from '../context/TerminalContext';
 import { 
   Tooltip,
   TooltipContent,
@@ -10,6 +11,36 @@ import {
 
 const Navbar = () => {
   const location = useLocation();
+  const { projects } = useTerminal();
+  
+  // Extract projectId from the URL path manually since useParams() doesn't work at this level
+  const projectId = location.pathname.startsWith('/projects/') && location.pathname !== '/projects' 
+    ? location.pathname.split('/projects/')[1] 
+    : null;
+  
+  // Find current project if we're on a project detail page
+  const currentProject = projectId ? projects.find(p => p.id === projectId) : null;
+  
+  // Determine navbar text and logo based on current project category
+  const getNavbarContent = () => {
+    if (currentProject && currentProject.category) {
+      // Check if category indicates SoC X RAID (could be '1' or text containing 'raid')
+      if (currentProject.category === '1' || 
+          currentProject.category.toString().toLowerCase().includes('soc x raid') || 
+          currentProject.category.toString().toLowerCase().includes('raid')) {
+        return {
+          text: 'DevlUp Labs X RAID',
+          showRaidLogo: true
+        };
+      }
+    }
+    return {
+      text: 'DevlUp Labs',
+      showRaidLogo: false
+    };
+  };
+
+  const navbarContent = getNavbarContent();
   
   const isActive = (path: string) => {
     return location.pathname === path ? 'text-terminal-accent' : 'text-terminal-dim hover:text-terminal-text';
@@ -25,7 +56,16 @@ const Navbar = () => {
               alt="DevlUp Labs Logo" 
               className="h-8 w-8"
             />
-            <span className="text-terminal-text font-bold text-lg hidden sm:inline">DevlUp Labs</span>
+            <span className="text-terminal-text font-bold text-lg hidden sm:flex items-center">
+              {navbarContent.text}
+              {navbarContent.showRaidLogo && (
+                <img 
+                  src="/uploads/raid.png" 
+                  alt="RAID Logo" 
+                  className="h-8 w-8 ml-2"
+                />
+              )}
+            </span>
           </Link>
         </div>
         
