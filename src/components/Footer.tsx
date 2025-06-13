@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Github ,Mail } from 'lucide-react';
 
-const Footer = () => {
+interface FooterProps {
+  label?: string;
+  showRaidLogo?: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({ label, showRaidLogo = false }) => {
   const currentYear = new Date().getFullYear();
+  const footerLabel = label || `DevlUp Labs Summer of Code`;
   
   return (
     <footer className="bg-terminal border-t border-terminal-dim text-terminal-dim py-6">
@@ -15,7 +21,16 @@ const Footer = () => {
               alt="DevlUp Labs Logo" 
               className="h-6 w-6 mr-2"
             />
-            <span className="text-sm">DevlUp Labs Summer of Code &copy; {currentYear}</span>
+            <span className="text-sm flex items-center">
+              {footerLabel} &copy; {currentYear}
+              {showRaidLogo && (
+                <img 
+                  src="/uploads/raid.png" 
+                  alt="RAID Logo" 
+                  className="h-6 w-6 ml-2"
+                />
+              )}
+            </span>
           </div>
           
           <div className="flex space-x-4 items-center">
