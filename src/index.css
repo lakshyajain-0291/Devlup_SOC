@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap');
 
@@ -80,5 +79,124 @@
 
   .tech-badge {
     @apply bg-terminal-dim text-terminal-text px-2 py-1 rounded-md text-xs mr-2 mb-2 inline-block transition-all hover:bg-terminal-accent hover:text-black;
+  }
+
+  /* AI-like animations for SoC X RAID tags */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 25px rgba(59, 130, 246, 0.6);
+    }
+  }
+
+  /* Developer-themed animations for SoC tags */
+  @keyframes typing {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+    }
+    25% {
+      transform: scale(1.1) rotate(-1deg);
+    }
+    75% {
+      transform: scale(1.08) rotate(1deg);
+    }
+  }
+
+  @keyframes code-glow {
+    0%, 100% {
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.6), 0 0 15px rgba(34, 197, 94, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.9), 0 0 30px rgba(34, 197, 94, 0.6), 0 0 40px rgba(34, 197, 94, 0.3);
+    }
+  }
+
+  @keyframes binary-flow {
+    0% {
+      background-position: -200% -200%;
+    }
+    100% {
+      background-position: 200% 200%;
+    }
+  }
+
+  @keyframes code-matrix {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes terminal-cursor {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  .dev-badge {
+    position: relative;
+    overflow: hidden;
+    animation: code-glow 2s ease-in-out infinite, typing 1.5s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+    background-size: 300% 300%;
+    animation: code-glow 2s ease-in-out infinite, binary-flow 3s linear infinite, typing 1.5s ease-in-out infinite;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+
+
+  .dev-badge::after {
+    content: '01101';
+    position: absolute;
+    top: -10px;
+    right: 2px;
+    font-size: 6px;
+    font-family: 'Courier New', monospace;
+    color: rgba(34, 197, 94, 0.6);
+    animation: code-matrix 2s linear infinite;
+  }
+
+  .ai-badge {
+    position: relative;
+    overflow: hidden;
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .ai-badge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+  }
+
+  .ai-badge::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(147, 197, 253, 0.2);
+    animation: pulse 1.5s ease-in-out infinite;
   }
 }
