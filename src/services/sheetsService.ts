@@ -17,7 +17,8 @@ const MOCK_PROJECTS: Project[] = [
       role: 'AI Research Lead',
       email: 'sarah.chen@example.com',
       linkedin: 'https://linkedin.com/in/sarahchen'
-    }
+    },
+    category: '1' // Add category for testing
   },
   {
     id: '2',
@@ -28,7 +29,8 @@ const MOCK_PROJECTS: Project[] = [
       name: 'Michael Rodriguez',
       role: 'Game Development Instructor',
       email: 'michael.r@example.com'
-    }
+    },
+    category: 'soc x raid' // Add different category for testing
   },
   {
     id: '3',
@@ -204,7 +206,8 @@ export const fetchProjects = async (): Promise<Project[]> => {
           linkedin: item['Mentor 3 LinkedIn Url'] || undefined,
           github: item['Mentor 3 Github Url'] || undefined
         } : undefined,
-        projectDoc: item['Project Doc'] || ''
+        projectDoc: item['Project Doc'] || '',
+        category: item['Category'] ? item['Category'].trim() : undefined
       };
     });
     
