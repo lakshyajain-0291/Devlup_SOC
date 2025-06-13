@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useTerminal } from '../context/TerminalContext';
 import { ArrowLeft, FileText, Github, Linkedin, Mail, ExternalLink, User } from 'lucide-react';
 import TerminalHeader from '../components/TerminalHeader';
+import Footer from '../components/Footer';
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
@@ -104,49 +105,81 @@ const ProjectDetail = () => {
     project.mentor3
   ].filter(Boolean);
 
+  // Determine header text and category badge style based on category
+  let headerText = `Project: ${project.name}`;
+  let categoryLabel = '';
+  let categoryClass = '';
+  let footerLabel = undefined; // Default footer text
+  let showRaidLogo = false; // Default to not showing RAID logo
+  
+  if (project.category) {
+    // Check if category indicates SoC X RAID (could be '1' or text containing 'raid')
+    if (project.category === '1' || 
+        project.category.toString().toLowerCase().includes('soc x raid') || 
+        project.category.toString().toLowerCase().includes('raid')) {
+      headerText = `Project: ${project.name} (SoC X RAID)`;
+      categoryLabel = 'SoC X RAID';
+      categoryClass = 'bg-blue-600/90 text-white ai-badge';
+      footerLabel = 'Summer of Code X Summer Of Raid'; // Custom footer text for SoC X RAID
+      showRaidLogo = true; // Show RAID logo in footer
+    } else {
+      categoryLabel = 'SoC';
+      categoryClass = 'bg-blue-600/90 text-white dev-badge';
+    }
+  } else {
+    // Default when category is undefined or empty
+    categoryLabel = 'SoC';
+    categoryClass = 'bg-blue-600/90 text-white dev-badge';
+  }
+
   return (
-    <div className="min-h-screen bg-terminal flex flex-col items-center p-4">
-      <div className="terminal-window max-w-4xl w-full mx-auto my-8">
-        <TerminalHeader title={`Project: ${project.name}`} />
-        <div className="terminal-body min-h-[500px] overflow-y-auto">
-          <Link to="/projects" className="flex items-center text-terminal-accent mb-6 hover:underline">
-            <ArrowLeft size={16} className="mr-2" />
-            Back to Projects
-          </Link>
-          
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-2xl font-bold text-terminal-text mb-3">{project.name}</h1>
-              <p className="text-terminal-dim mb-4">{project.description}</p>
-              
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.techStack.map((tech) => (
-                  <span 
-                    key={tech} 
-                    className="bg-terminal-dim/20 px-2 py-1 text-sm text-terminal-text rounded"
-                  >
-                    {tech}
+    <div className="min-h-screen bg-terminal flex flex-col">
+      <div className="flex-grow flex flex-col items-center p-4">
+        <div className="terminal-window max-w-4xl w-full mx-auto my-8">
+          <TerminalHeader title={headerText} />
+          <div className="terminal-body min-h-[500px] overflow-y-auto">
+            <Link to="/projects" className="flex items-center text-terminal-accent mb-6 hover:underline">
+              <ArrowLeft size={16} className="mr-2" />
+              Back to Projects
+            </Link>
+            
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-2xl font-bold text-terminal-text mb-1">{project.name}</h1>
+                {/* Category badge */}
+                {categoryLabel && (
+                  <span className={`inline-block mb-3 px-2 py-0.5 rounded text-xs font-semibold ${categoryClass}`}>
+                    <span className="relative z-10">{categoryLabel}</span>
                   </span>
-                ))}
+                )}
+                <p className="text-terminal-dim mb-4">{project.description}</p>
+              
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.techStack.map((tech) => (
+                    <span 
+                      key={tech} 
+                      className="bg-terminal-dim/20 px-2 py-1 text-sm text-terminal-text rounded"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
             
             {/* Project Documentation Section */}
-            {(project.projectDoc ) && (
+            {project.projectDoc && (
               <div className="border-t border-terminal-dim pt-4">
                 <h2 className="text-xl text-terminal-text mb-3">Project Documentation</h2>
                 <div className="space-y-2">
-                  {project.projectDoc && (
-                    <a 
-                      href={project.projectDoc} 
-                      className="flex items-center gap-2 text-terminal-accent hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FileText size={16} />
-                      Project Doc
-                    </a>
-                  )}
+                  <a 
+                    href={project.projectDoc} 
+                    className="flex items-center gap-2 text-terminal-accent hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FileText size={16} />
+                    Project Doc
+                  </a>
                 </div>
               </div>
             )}
@@ -168,17 +201,32 @@ const ProjectDetail = () => {
               <div>
                 <p className="text-terminal-dim">Interested in contributing to this project?</p>
               </div>
-              <Link 
-                to="/apply" 
-                state={{ selectedProjectId: project.id }}
-                className="bg-terminal-dim hover:bg-terminal-accent text-terminal-text px-4 py-2 rounded transition-colors"
-              >
-                Apply Now
-              </Link>
+              {/* Conditional Apply button - RAID form for category 1, regular apply page for others */}
+              {showRaidLogo ? (
+                console.log('Showing RAID apply button with url:', import.meta.env.VITE_GOOGLE_FORM_URL_RAID),
+                <button 
+                  onClick={() => window.open(import.meta.env.VITE_GOOGLE_FORM_URL_RAID, '_blank')}
+                  className="bg-terminal-dim hover:bg-terminal-accent text-terminal-text px-4 py-2 rounded transition-colors"
+                >
+                  Apply Now
+                </button>
+              ) : (
+                <Link 
+                  to="/apply" 
+                  state={{ selectedProjectId: project.id }}
+                  className="bg-terminal-dim hover:bg-terminal-accent text-terminal-text px-4 py-2 rounded transition-colors"
+                >
+                  Apply Now
+                </Link>
+              )}
             </div>
+            
+            </div> {/* Close space-y-6 div */}
           </div>
         </div>
       </div>
+      {/* Custom Footer for ProjectDetail with conditional text and logo */}
+      <Footer label={footerLabel} showRaidLogo={showRaidLogo} />
     </div>
   );
 };
