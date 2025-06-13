@@ -29,6 +29,7 @@ export interface Project {
     github?: string;
   };
   projectDoc?: string;
+  category?: string; // Add category field
 }
 
 interface ProjectCardProps {
@@ -36,15 +37,31 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  // Determine category label and style
+  let categoryLabel = 'SoC';
+  let categoryClass = 'bg-blue-600/90 text-white dev-badge';
+  
+  if (project.category && project.category.trim().toLowerCase() === 'soc x raid') {
+    categoryLabel = 'SoC X RAID';
+    categoryClass = 'bg-blue-600/90 text-white ai-badge';
+  }
   return (
     <Link 
       to={`/projects/${project.id}`}
       className="border border-terminal-dim rounded-lg p-4 hover:border-terminal-accent transition-all group flex flex-col"
     >
       <div className="flex justify-between items-start mb-3">
-        <h2 className="font-bold text-xl text-terminal-text group-hover:text-terminal-accent">
-          {project.name}
-        </h2>
+        <div>
+          <h2 className="font-bold text-xl text-terminal-text group-hover:text-terminal-accent">
+            {project.name}
+          </h2>
+          {/* Category badge */}
+          {project.category && (
+            <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-semibold ${categoryClass}`}>
+              <span className="relative z-10">{categoryLabel}</span>
+            </span>
+          )}
+        </div>
         <ChevronRight className="text-terminal-dim group-hover:text-terminal-accent" />
       </div>
       <p className="text-terminal-dim mb-4 flex-grow">
