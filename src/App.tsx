@@ -18,11 +18,15 @@ import AnalyticsTracker from "./components/AnalyticsTracker";
 import ShortcutProvider from "./components/ShortcutProvider";
 import SnowEffect from "./components/SnowEffect";
 import { ThemeProvider, useTheme } from "./components/ThemeProvider";
+import Entry3D from './pages/Entry3D';
+
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   const location = useLocation();
+  const isEntryPage = location.pathname === "/";
+
   const isProjectDetailPage = location.pathname.startsWith('/projects/') && location.pathname !== '/projects';
   const { showSnow } = useTheme();
 
@@ -30,11 +34,13 @@ const AppContent = () => {
     <div className="flex flex-col min-h-screen relative">
       {showSnow && <SnowEffect />}
       {/* <div className="relative" style={{ zIndex: 10 }}> */}
-        <Navbar />
+       {!isEntryPage && <Navbar />}
+
       {/* </div> */}
       <main className="flex-grow relative" >
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Entry3D />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/ongoing" element={<Projects />} />
           <Route path="/projects/completed" element={<Projects />} />
@@ -49,11 +55,12 @@ const AppContent = () => {
         </Routes>
       </main>
       {/* Only render Footer if not on ProjectDetail page (which has its own custom Footer) */}
-      {!isProjectDetailPage && (
-        <div className="relative" style={{ zIndex: 10 }}>
-          <Footer />
-        </div>
-      )}
+     {!isEntryPage && !isProjectDetailPage && (
+  <div className="relative" style={{ zIndex: 10 }}>
+    <Footer />
+  </div>
+)}
+
     </div>
   );
 };
