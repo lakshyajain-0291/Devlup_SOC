@@ -1,28 +1,38 @@
-
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useTerminal } from '../context/TerminalContext';
-import TerminalHeader from '../components/TerminalHeader';
-import ContributorForm from '../components/ContributorForm';
+import React from "react";
+import { useLocation } from "react-router-dom";
+import { useTerminal } from "../context/TerminalContext";
+import TerminalHeader from "../components/TerminalHeader";
+import ContributorForm from "../components/ContributorForm";
 
 const ApplyPage = () => {
   const location = useLocation();
   const { projects, handleContributorSubmit } = useTerminal();
-  const selectedProjectId = location.state?.selectedProjectId || '';
+
+  const selectedProjectId = location.state?.selectedProjectId || "";
 
   return (
     <div className="min-h-screen bg-terminal/95 flex flex-col items-center p-2 sm:p-4">
       <div className="terminal-window max-w-4xl w-full mx-auto my-4 sm:my-8">
         <TerminalHeader title="Contributor Application Form" />
+
         <div className="terminal-body min-h-[500px] overflow-y-auto p-3 sm:p-6">
           <div className="space-y-4">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-terminal-text">Contributor Application</h2>
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-terminal-text">
+              Contributor Application
+            </h2>
+
             <p className="text-sm sm:text-base text-terminal-dim">
-              Fill out the following form to express your interest in contributing to one of our projects.
+              Fill out the following form to express your interest in contributing
+              to one of our projects.
             </p>
-            <ContributorForm 
-              projects={projects.map(p => ({ id: p.id, name: p.name }))} 
-              onSubmit={handleContributorSubmit} 
+
+            {/* INTERNAL FORM → DATABASE */}
+            <ContributorForm
+              projects={projects.map((p) => ({
+                id: p.id,
+                name: p.name,
+              }))}
+              onSubmit={handleContributorSubmit}
               initialProjectId={selectedProjectId}
             />
           </div>

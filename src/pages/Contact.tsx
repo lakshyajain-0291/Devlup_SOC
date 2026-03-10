@@ -122,10 +122,10 @@ const Contact = () => {
             </div>
           </div>
           
-          {/* Map Section
+          Map Section
           <div className="mt-8 border border-terminal-dim rounded-lg overflow-hidden h-[300px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3889.9776748166994!2d77.6626092!3d12.8440536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae6c972baa2361%3A0x38c6114d98d98770!2sPES%20University%20Electronic%20City%20Campus!5e0!3m2!1sen!2sin!4v1652429234925!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3571.525761652536!2d73.11342220000002!3d26.4710115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39418c5ea672337b%3A0xb6c9a5a9b08db22e!2sIndian%20Institute%20of%20Technology%20(IIT)%2C%20Jodhpur!5e0!3m2!1sen!2sin!4v1769708743039!5m2!1sen!2sin&theme=dark"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -134,7 +134,7 @@ const Contact = () => {
               referrerPolicy="no-referrer-when-downgrade"
               title="PES University Electronic City Campus Map"
             ></iframe>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

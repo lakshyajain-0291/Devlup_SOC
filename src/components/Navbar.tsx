@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Briefcase, User, BarChart, Phone, Calendar, Menu, X } from 'lucide-react';
+import { Home, Briefcase, User, BarChart, Phone, Calendar, Menu, X, GraduationCap} from 'lucide-react';
+import { Trophy } from "lucide-react";
 import { useTerminal } from '../context/TerminalContext';
 import { 
   Tooltip,
@@ -49,11 +50,13 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/', icon: Home, label: 'Home', shortcut: 'Alt+H' },
+    { path: '/mentors', icon: GraduationCap, label: 'Mentors', shortcut:'Alt+M'},
     { path: '/projects', icon: Briefcase, label: 'Projects', shortcut: 'Alt+P' },
     { path: '/apply', icon: User, label: 'Apply', shortcut: 'Alt+A' },
     { path: '/timeline', icon: Calendar, label: 'Timeline', shortcut: 'Alt+T' },
     { path: '/stats', icon: BarChart, label: 'Stats', shortcut: 'Alt+S' },
     { path: '/contact', icon: Phone, label: 'Contact', shortcut: 'Alt+C' },
+    { path: '/leaderboard', icon: Trophy, label: 'Leaderboard', shortcut: 'Alt+L' },
   ];
   
   return (

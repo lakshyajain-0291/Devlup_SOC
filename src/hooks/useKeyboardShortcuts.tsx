@@ -32,8 +32,10 @@ export function useKeyboardShortcuts() {
       { key: 't', route: '/timeline', description: 'Timeline', altKey: true },
       { key: 's', route: '/stats', description: 'Stats', altKey: true },
       { key: 'c', route: '/contact', description: 'Contact', altKey: true },
+      { key: 'm', route: '/mentors', description: 'Mentors', altKey: true },
       { key: 't', route: '/', description: 'Terminal View', altKey: true, shiftKey: true, focusTerminal: true },
       { key: '/', route: '/', description: 'Help', altKey: true, shiftKey: true },
+      { key: 'l', route: '/leaderboard', description: 'Leaderboard', altKey: true },
     ];
 
     // Handle keyboard events
@@ -117,6 +119,8 @@ export function useKeyboardShortcuts() {
           <p><kbd className="px-1 bg-terminal-dim rounded">Alt+T</kbd> - Timeline</p>
           <p><kbd className="px-1 bg-terminal-dim rounded">Alt+S</kbd> - Stats</p>
           <p><kbd className="px-1 bg-terminal-dim rounded">Alt+C</kbd> - Contact</p>
+          <p><kbd className="px-1 bg-terminal-dim rounded">Alt+M</kbd> - Mentors</p>
+          <p><kbd className="px-1 bg-terminal-dim rounded">Alt+L</kbd> - Leaderboard</p>
           <p><kbd className="px-1 bg-terminal-dim rounded">Alt+Shift+T</kbd> - Terminal View</p>
         </div>
       ),
