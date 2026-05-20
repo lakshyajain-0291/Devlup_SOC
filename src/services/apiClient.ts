@@ -249,4 +249,37 @@ export const deleteFormField = async (id: string) => {
   return response.data;
 };
 
+// ===========================
+// MENTOR PANEL APIs
+// ===========================
+export const fetchMentorProjects = async () => {
+  const response = await apiClient.get('/mentor/projects');
+  return response.data;
+};
+
+export const fetchMentorApplications = async () => {
+  const response = await apiClient.get('/mentor/applications');
+  return response.data;
+};
+
+export const updateMentorApplicationStatus = async (id: string, data: any) => {
+  const response = await apiClient.put(`/mentor/applications/${id}`, data);
+  return response.data;
+};
+
+export const fetchResultsSetting = async () => {
+  const response = await apiClient.get('/settings/show_results');
+  return response.data;
+};
+
+export const updateResultsSetting = async (value: boolean) => {
+  const response = await apiClient.post('/settings/show_results', { value });
+  return response.data;
+};
+
+export const fetchResults = async () => {
+  const response = await apiClient.get('/results');
+  return response.data;
+};
+
 export default apiClient;

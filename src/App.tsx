@@ -15,7 +15,9 @@ import ApplyPage from "./pages/ApplyPage";
 import Contact from "./pages/Contact";
 import Stats from "./pages/Stats";
 import Timeline from "./pages/Timeline";
+import Results from "./pages/Results";
 import AdminPanel from "./pages/AdminPanel";
+import MentorPanel from "./pages/MentorPanel";
 import { TerminalProvider } from "./context/TerminalContext";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
@@ -150,12 +152,22 @@ const AppContent = () => {
           }
         />
 
+        <Route
+          path="/mentor"
+          element={
+            <ProtectedRoute>
+              <MentorPanel />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/apply" element={<ApplyFormPage />} />
         <Route path="/apply/:projectId" element={<ApplyFormPage />} />
         <Route path="/apply/form" element={<FormPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/stats" element={<Stats />} />
         <Route path="/timeline" element={<Timeline />} />
+        <Route path="/results" element={<Results />} />
 
         {/* Catch-all */}
         <Route path="*" element={<NotFound />} />

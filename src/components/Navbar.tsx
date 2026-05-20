@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Briefcase, User, BarChart, Phone, Calendar, Menu, X, GraduationCap, LogOut, LogIn } from 'lucide-react';
+import { Home, Briefcase, User, BarChart, Phone, Calendar, Menu, X, GraduationCap, LogOut, LogIn, Award } from 'lucide-react';
 import { useTerminal } from '../context/TerminalContext';
 import { useAuth } from '../context/AuthContext';
-import { googleLogin } from '../services/apiClient';
+import { googleLogin, fetchResultsSetting } from '../services/apiClient';
 import { useToast } from '../hooks/use-toast';
 import {
   Tooltip,
@@ -41,6 +41,19 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { toast } = useToast();
   const googleInitializedRef = useRef(false);
+  const [showResultsLink, setShowResultsLink] = useState(false);
+
+  useEffect(() => {
+    const checkResults = async () => {
+      try {
+        const data = await fetchResultsSetting();
+        setShowResultsLink(data.show_results);
+      } catch (err) {
+        setShowResultsLink(false);
+      }
+    };
+    checkResults();
+  }, []);
 
   // Extract projectId from the URL path manually since useParams() doesn't work at this level
   const projectId = location.pathname.startsWith('/projects/') && location.pathname !== '/projects'
@@ -100,10 +113,17 @@ const Navbar = () => {
         if (data.user) {
           setGoogleUser(data.user);
         }
-        toast({
-          title: "Signed In",
-          description: `Welcome, ${data.user?.name || 'User'}!`,
-        });
+        if (data.user?.role === 'mentor') {
+          toast({
+            title: "Signed In as Mentor",
+            description: "You can review applications of your project.",
+          });
+        } else {
+          toast({
+            title: "Signed In",
+            description: `Welcome, ${data.user?.name || 'User'}!`,
+          });
+        }
       } else {
         throw new Error("No access token found");
       }
@@ -136,7 +156,7 @@ const Navbar = () => {
     return location.pathname === path ? 'text-terminal-accent' : 'text-terminal-dim hover:text-terminal-text';
   };
 
-  const navLinks = [
+  const baseLinks = [
     {
       path: '/home',
       icon: Home,
@@ -144,13 +164,23 @@ const Navbar = () => {
       shortcut: 'Alt+H',
       state: { [PRESERVE_LAST_CONTENT_ROUTE_STATE]: true },
     },
-    { path: '/mentors', icon: GraduationCap, label: 'Mentors', shortcut:'Alt+M'},
+    { path: '/mentors', icon: GraduationCap, label: 'Mentors', shortcut: 'Alt+M' },
     { path: '/projects', icon: Briefcase, label: 'Projects', shortcut: 'Alt+P' },
     { path: '/apply', icon: User, label: 'Apply', shortcut: 'Alt+A' },
     { path: '/timeline', icon: Calendar, label: 'Timeline', shortcut: 'Alt+T' },
     { path: '/stats', icon: BarChart, label: 'Stats', shortcut: 'Alt+S' },
     { path: '/contact', icon: Phone, label: 'Contact', shortcut: 'Alt+C' },
   ];
+
+  const navLinks = [...baseLinks];
+  if (showResultsLink) {
+    navLinks.splice(3, 0, { path: '/results', icon: Award, label: 'Results', shortcut: 'Alt+R' });
+  }
+  if (isGoogleUser && googleUser) {
+    if (googleUser.role === 'mentor') {
+      navLinks.push({ path: '/mentor', icon: Briefcase, label: 'Mentor Panel', shortcut: '' });
+    }
+  }
 
   return (
     <>
