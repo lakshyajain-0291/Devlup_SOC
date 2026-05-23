@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Briefcase, User, BarChart, Phone, Calendar, Menu, X, GraduationCap, LogOut, LogIn, Award } from 'lucide-react';
 import { useTerminal } from '../context/TerminalContext';
@@ -42,6 +42,8 @@ const Navbar = () => {
   const { toast } = useToast();
   const googleInitializedRef = useRef(false);
   const [showResultsLink, setShowResultsLink] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkResults = async () => {
@@ -105,6 +107,31 @@ const Navbar = () => {
     init();
   }, []);
 
+  // Render the Google button into the modal container when it opens
+  const renderGoogleButton = useCallback(() => {
+    if (googleButtonRef.current && window.google?.accounts?.id) {
+      // Clear previous renders
+      googleButtonRef.current.innerHTML = '';
+      window.google.accounts.id.renderButton(googleButtonRef.current, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'signin_with',
+        shape: 'rectangular',
+        logo_alignment: 'left',
+        width: 300,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (showSignInModal) {
+      // Small delay to ensure the DOM ref is available
+      const timer = setTimeout(renderGoogleButton, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [showSignInModal, renderGoogleButton]);
+
   const handleGoogleCallback = async (response: { credential: string }) => {
     try {
       const data = await googleLogin(response.credential);
@@ -142,15 +169,40 @@ const Navbar = () => {
 
   const handleGoogleSignIn = () => {
     if (window.google?.accounts?.id) {
-      window.google.accounts.id.prompt();
+      setShowSignInModal(true);
     } else {
-      toast({
-        title: "Error",
-        description: "Google Sign-In is not available. Please try again later.",
-        variant: "destructive",
+      // Fallback: try to load the script and then open modal
+      loadGoogleScript().then(() => {
+        if (window.google?.accounts?.id) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleCallback,
+          });
+          googleInitializedRef.current = true;
+          setShowSignInModal(true);
+        } else {
+          toast({
+            title: "Error",
+            description: "Google Sign-In is not available. Please try again later.",
+            variant: "destructive",
+          });
+        }
+      }).catch(() => {
+        toast({
+          title: "Error",
+          description: "Failed to load Google Sign-In. Please check your connection and try again.",
+          variant: "destructive",
+        });
       });
     }
   };
+
+  // Close the sign-in modal when user becomes authenticated
+  useEffect(() => {
+    if (isGoogleUser && googleUser) {
+      setShowSignInModal(false);
+    }
+  }, [isGoogleUser, googleUser]);
 
   const isActive = (path: string) => {
     return location.pathname === path ? 'text-terminal-accent' : 'text-terminal-dim hover:text-terminal-text';
@@ -377,6 +429,48 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Google Sign-In Modal Overlay */}
+      {showSignInModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          onClick={() => setShowSignInModal(false)}
+        >
+          <div
+            className="relative bg-[#1a1a2e] border border-terminal-dim/50 rounded-2xl p-8 shadow-2xl shadow-terminal-accent/10 max-w-sm w-[90vw] mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setShowSignInModal(false)}
+              className="absolute top-3 right-3 text-terminal-dim hover:text-terminal-text transition-colors p-1"
+              aria-label="Close sign-in modal"
+            >
+              <X size={20} />
+            </button>
+
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-terminal-accent text-lg font-mono">&gt;_</span>
+                <h2 className="text-xl font-bold text-terminal-text">Sign In</h2>
+              </div>
+              <p className="text-terminal-dim text-sm">
+                Use your <strong className="text-terminal-accent">@iitj.ac.in</strong> Google account
+              </p>
+            </div>
+
+            {/* Google rendered button container */}
+            <div className="flex justify-center">
+              <div ref={googleButtonRef} id="google-signin-button" />
+            </div>
+
+            <p className="text-terminal-dim/60 text-xs text-center mt-5">
+              By signing in, you agree to our terms of use.
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 };
