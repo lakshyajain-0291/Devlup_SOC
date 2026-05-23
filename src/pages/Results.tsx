@@ -234,43 +234,39 @@ const Results: React.FC = () => {
                   variants={containerVariants}
                   initial="hidden"
                   animate="show"
-                  className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-8"
                 >
                   {filteredResults.map((project) => (
                     <motion.div
                       key={project.project_title}
                       variants={itemVariants}
                       whileHover={{ 
-                        y: -6, 
+                        y: -8, 
                         transition: { duration: 0.2, ease: "easeOut" } 
                       }}
-                      className={`project-card-hover border p-5 bg-[#0D1117]/60 flex flex-col justify-between min-h-[220px] relative overflow-hidden group hover:border-terminal-accent/50 rounded-xl transition-all duration-300
+                      className={`project-card-hover border p-8 bg-[#0D1117]/60 flex flex-col justify-between min-h-[300px] relative overflow-hidden group hover:border-terminal-accent/50 rounded-2xl transition-all duration-300
                         ${isWinter 
-                          ? 'border-cyan-950/80 hover:shadow-[0_0_15px_rgba(34,211,238,0.15)]' 
-                          : 'border-terminal-dim hover:shadow-[0_0_15px_var(--accent-glow-30)]'
+                          ? 'border-cyan-950/80 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]' 
+                          : 'border-terminal-dim hover:shadow-[0_0_20px_var(--accent-glow-30)]'
                         }`}
                     >
                       {/* Sweep Laser Scanline */}
                       <div className="scan-line" />
 
-                      <div className="space-y-4 w-full">
-                        {/* Project Header */}
-                        <div className="border-b border-terminal-dim/30 pb-3">
-                          <h3 className="text-xl font-bold text-white group-hover:text-terminal-accent transition-colors">
+                      <div className="space-y-6 w-full">
+                        {/* Project Header & Mentors horizontally aligned */}
+                        <div className="border-b border-terminal-dim/30 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <h3 className="text-2xl font-bold text-white group-hover:text-terminal-accent transition-colors leading-tight">
                             {project.project_title}
                           </h3>
-                        </div>
-
-                        {/* Mentors */}
-                        <div className="flex items-start gap-2">
-                          <Users size={14} className="text-terminal-dim mt-1 flex-shrink-0" />
-                          <div className="flex flex-wrap gap-1.5 items-center">
-                            <span className="text-xs font-semibold text-terminal-dim uppercase font-mono tracking-wider mr-1.5">Mentors:</span>
+                          <div className="flex items-center gap-2 flex-wrap sm:justify-end">
+                            <Users size={14} className="text-terminal-dim flex-shrink-0" />
+                            <span className="text-xs font-semibold text-terminal-dim uppercase font-mono tracking-wider">Mentors:</span>
                             {project.mentors && project.mentors.length > 0 ? (
                               project.mentors.map(m => (
                                 <span
                                   key={m.name}
-                                  className={`text-[10px] font-mono px-2 py-0.5 rounded border font-bold
+                                  className={`text-xs font-mono px-2.5 py-1 rounded border font-bold whitespace-nowrap
                                     ${isWinter
                                       ? 'bg-cyan-950/40 border-cyan-500/30 text-cyan-400'
                                       : 'bg-terminal-dim/10 border-terminal-dim/30 text-terminal-accent'
@@ -286,24 +282,24 @@ const Results: React.FC = () => {
                         </div>
 
                         {/* Accepted Candidates */}
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           <div className="text-xs font-semibold text-terminal-dim uppercase font-mono tracking-wider mb-2">
                             Accepted Candidates:
                           </div>
                           {project.accepted_candidates.length === 0 ? (
-                            <div className="text-xs text-terminal-dim italic bg-terminal-dim/5 p-2.5 rounded border border-terminal-dim/10 font-mono">
+                            <div className="text-sm text-terminal-dim italic bg-terminal-dim/5 p-3 rounded border border-terminal-dim/10 font-mono">
                               No candidates selected
                             </div>
                           ) : (
-                            <div className="max-h-[280px] overflow-y-auto terminal-scroll pr-1">
-                              <div className="grid grid-cols-1 gap-2">
+                            <div className="pr-1">
+                              <div className="grid grid-cols-1 gap-2.5">
                                 {project.accepted_candidates.map(candidate => (
                                   <div
                                     key={candidate.name}
-                                    className="flex items-center justify-between py-2 px-3 rounded-lg bg-black/30 border border-terminal-dim/10 hover:border-terminal-accent/30 hover:bg-terminal-accent/5 pl-3 hover:pl-5 transition-all duration-300 group/row"
+                                    className="flex items-center justify-between py-3 px-4 rounded-xl bg-black/30 border border-terminal-dim/10 hover:border-terminal-accent/30 hover:bg-terminal-accent/5 pl-4 hover:pl-6 transition-all duration-300 group/row"
                                   >
-                                    <div className="text-xs font-mono font-bold text-white flex items-center gap-2">
-                                      <ChevronRight size={12} className="text-terminal-accent animate-pulse group-hover/row:translate-x-1 transition-transform" />
+                                    <div className="text-sm font-mono font-bold text-white flex items-center gap-2">
+                                      <ChevronRight size={14} className="text-terminal-accent animate-pulse group-hover/row:translate-x-1 transition-transform" />
                                       <span>{candidate.name}</span>
                                     </div>
                                     {candidate.github && (
@@ -311,9 +307,9 @@ const Results: React.FC = () => {
                                         href={`https://github.com/${candidate.github}`}
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="text-terminal-accent hover:text-white transition-colors flex items-center gap-1 text-[10px] font-mono bg-terminal-accent/5 px-2 py-0.5 rounded border border-terminal-accent/10 hover:border-terminal-accent/40"
+                                        className="text-terminal-accent hover:text-white transition-colors flex items-center gap-1.5 text-xs font-mono bg-terminal-accent/5 px-2.5 py-1 rounded border border-terminal-accent/10 hover:border-terminal-accent/40"
                                       >
-                                        @{candidate.github} <ExternalLink size={10} />
+                                        @{candidate.github} <ExternalLink size={12} />
                                       </a>
                                     )}
                                   </div>

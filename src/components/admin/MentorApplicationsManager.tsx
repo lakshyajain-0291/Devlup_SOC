@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { useToast } from '../../hooks/use-toast';
-import { ExternalLink, Eye } from 'lucide-react';
+import { ExternalLink, Eye, Download } from 'lucide-react';
 
 const MentorApplicationsManager: React.FC = () => {
   const [applications, setApplications] = useState<any[]>([]);
@@ -49,13 +49,115 @@ const MentorApplicationsManager: React.FC = () => {
     }
   };
 
+  const handleDownloadCSV = () => {
+    if (applications.length === 0) {
+      toast({ title: "Info", description: "No applications to download.", variant: "default" });
+      return;
+    }
+
+    // 1. Determine dynamic keys (excluding standard ones and internal ones)
+    const standardKeys = new Set([
+      'id', '_id', 'updated_at', 'created_at',
+      'mentee_name', 'mentee_roll_number', 'mentee_email_id', 'mentee_github_id',
+      'project_name_1', 'status_1', 'mentee_proposal_url', 'mentee_prposoal_url', 'project_1_proposal',
+      'project_name_2', 'status_2', 'mentee_proposal_url2', 'project_2_proposal'
+    ]);
+
+    const dynamicKeysSet = new Set<string>();
+    applications.forEach(app => {
+      Object.keys(app).forEach(k => {
+        if (!standardKeys.has(k) && !k.startsWith('status_') && !k.startsWith('project_name_') && app[k] !== null && app[k] !== undefined && app[k] !== '') {
+          dynamicKeysSet.add(k);
+        }
+      });
+    });
+    const dynamicKeys = Array.from(dynamicKeysSet);
+
+    // 2. Build headers
+    const headers = [
+      'Applied Project',
+      'Choice Number',
+      'Status',
+      'Proposal URL',
+      'Name',
+      'Roll Number',
+      'Email',
+      'GitHub ID',
+      ...dynamicKeys.map(k => k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
+    ];
+
+    const getProposalUrl = (app: any, num: string) => {
+      if (num === '1') {
+        return app.mentee_proposal_url || app.mentee_prposoal_url || app.project_1_proposal || '';
+      } else {
+        return app.mentee_proposal_url2 || app.project_2_proposal || '';
+      }
+    };
+
+    // 3. Build rows: one row per choice that belongs to the mentored projects
+    const rows: string[] = [];
+    applications.forEach(app => {
+      // Find all project choices that are not masked (meaning they are mentored by this mentor)
+      const projectKeys = Object.keys(app).filter(k => k.startsWith('project_name_') && app[k]).sort();
+      
+      projectKeys.forEach(key => {
+        const num = key.replace('project_name_', '');
+        const statusKey = `status_${num}`;
+        
+        const rowData: string[] = [];
+        
+        // Project details
+        rowData.push(app[key] || '');
+        rowData.push(num);
+        rowData.push(app[statusKey] || 'pending');
+        rowData.push(getProposalUrl(app, num));
+        
+        // Mentee details
+        rowData.push(app.mentee_name || '');
+        rowData.push(app.mentee_roll_number || '');
+        rowData.push(app.mentee_email_id || '');
+        rowData.push(app.mentee_github_id ? `@${app.mentee_github_id}` : '');
+        
+        // Dynamic custom fields
+        dynamicKeys.forEach(k => {
+          rowData.push(app[k] !== undefined && app[k] !== null ? String(app[k]) : '');
+        });
+
+        rows.push(rowData.map(val => `"${val.replace(/"/g, '""')}"`).join(','));
+      });
+    });
+
+    const csvContent = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `mentor_applications_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({ title: "Success", description: "CSV file downloaded successfully!" });
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold text-terminal-accent">Applications for Your Project(s)</h2>
-        <Button onClick={loadApplications} variant="outline" className="border-terminal-dim text-terminal-text hover:text-white hover:bg-terminal-dim/20 bg-transparent">
-          Refresh
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleDownloadCSV} 
+            variant="outline" 
+            className="border-terminal-accent text-terminal-accent hover:text-white hover:bg-terminal-accent/20 bg-transparent flex items-center gap-2"
+            title="Download CSV"
+          >
+            <Download size={16} /> Download CSV
+          </Button>
+          <Button onClick={loadApplications} variant="outline" className="border-terminal-dim text-terminal-text hover:text-white hover:bg-terminal-dim/20 bg-transparent">
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <div className="terminal-window border border-terminal-dim p-4">

@@ -96,7 +96,7 @@ const MentorPanel: React.FC = () => {
           <Button
             onClick={() => navigate('/home')}
             variant="outline"
-            className="border-terminal-dim text-terminal-text hover:bg-terminal-dim/20 bg-transparent"
+            className="border-terminal-dim text-terminal-text hover:text-white hover:bg-terminal-dim/20 bg-transparent"
           >
             Home
           </Button>
