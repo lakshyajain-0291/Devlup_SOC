@@ -304,7 +304,7 @@ const Results: React.FC = () => {
                                     </div>
                                     {candidate.github && (
                                       <a
-                                        href={`https://github.com/${candidate.github}`}
+                                        href={candidate.github.startsWith('http') ? candidate.github : `https://github.com/${candidate.github}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="self-start sm:self-auto text-terminal-accent hover:text-white transition-colors flex items-center gap-1.5 text-xs font-mono bg-terminal-accent/5 px-2.5 py-1 rounded border border-terminal-accent/10 hover:border-terminal-accent/40"
