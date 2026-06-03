@@ -150,7 +150,7 @@ const Results: React.FC = () => {
 
       <div className="terminal-window max-w-[100rem] w-full mx-auto my-4 sm:my-8">
         <TerminalHeader title="Accepted Mentees Results" />
-        <div className="terminal-body min-h-[600px] p-4 sm:p-6 scrollbar-hide relative">
+        <div className="terminal-body min-h-[600px] p-3 sm:p-6 lg:p-8 scrollbar-hide relative">
           
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
@@ -197,23 +197,23 @@ const Results: React.FC = () => {
             <div className="space-y-8">
               
               {/* Header */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-terminal-dim/30 pb-6 mb-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 border-b border-terminal-dim/30 pb-4 sm:pb-6 mb-6 sm:mb-8">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-terminal-accent/10 rounded-lg">
                     <Award className="text-terminal-accent w-8 h-8" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-bold text-terminal-text">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-terminal-text">
                       Accepted Candidates
                     </h1>
-                    <p className="text-sm text-terminal-dim mt-1">
+                    <p className="text-xs sm:text-sm text-terminal-dim mt-1">
                       Congratulations to all selected mentees! Let the coding begin.
                     </p>
                   </div>
                 </div>
 
                 {/* Search Bar */}
-                <div className="relative w-full md:w-80">
+                <div className="relative w-full sm:max-w-md md:w-80">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-terminal-dim w-4 h-4" />
                   <Input
                     className="pl-10 bg-transparent border-terminal-dim text-white focus-visible:border-terminal-accent focus-visible:ring-1 focus-visible:ring-terminal-accent/30 w-full"
@@ -234,7 +234,7 @@ const Results: React.FC = () => {
                   variants={containerVariants}
                   initial="hidden"
                   animate="show"
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+                  className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
                 >
                   {filteredResults.map((project) => (
                     <motion.div
@@ -244,7 +244,7 @@ const Results: React.FC = () => {
                         y: -8, 
                         transition: { duration: 0.2, ease: "easeOut" } 
                       }}
-                      className={`project-card-hover border p-8 bg-[#0D1117]/60 flex flex-col justify-between min-h-[300px] relative overflow-hidden group hover:border-terminal-accent/50 rounded-2xl transition-all duration-300
+                      className={`project-card-hover border p-4 sm:p-6 lg:p-8 bg-[#0D1117]/60 flex flex-col justify-between min-h-[240px] relative overflow-hidden group hover:border-terminal-accent/50 rounded-2xl transition-all duration-300
                         ${isWinter 
                           ? 'border-cyan-950/80 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]' 
                           : 'border-terminal-dim hover:shadow-[0_0_20px_var(--accent-glow-30)]'
@@ -255,7 +255,7 @@ const Results: React.FC = () => {
 
                       <div className="space-y-6 w-full">
                         {/* Project Header & Mentors horizontally aligned */}
-                        <div className="border-b border-terminal-dim/30 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="border-b border-terminal-dim/30 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                           <h3 className="text-2xl font-bold text-white group-hover:text-terminal-accent transition-colors leading-tight">
                             {project.project_title}
                           </h3>
@@ -296,9 +296,9 @@ const Results: React.FC = () => {
                                 {project.accepted_candidates.map(candidate => (
                                   <div
                                     key={candidate.name}
-                                    className="flex items-center justify-between py-3 px-4 rounded-xl bg-black/30 border border-terminal-dim/10 hover:border-terminal-accent/30 hover:bg-terminal-accent/5 pl-4 hover:pl-6 transition-all duration-300 group/row"
+                                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-black/30 border border-terminal-dim/10 hover:border-terminal-accent/30 hover:bg-terminal-accent/5 pl-4 hover:pl-6 transition-all duration-300 group/row"
                                   >
-                                    <div className="text-sm font-mono font-bold text-white flex items-center gap-2">
+                                    <div className="text-sm sm:text-base font-mono font-bold text-white flex items-center gap-2">
                                       <ChevronRight size={14} className="text-terminal-accent animate-pulse group-hover/row:translate-x-1 transition-transform" />
                                       <span>{candidate.name}</span>
                                     </div>
@@ -307,7 +307,7 @@ const Results: React.FC = () => {
                                         href={`https://github.com/${candidate.github}`}
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="text-terminal-accent hover:text-white transition-colors flex items-center gap-1.5 text-xs font-mono bg-terminal-accent/5 px-2.5 py-1 rounded border border-terminal-accent/10 hover:border-terminal-accent/40"
+                                        className="self-start sm:self-auto text-terminal-accent hover:text-white transition-colors flex items-center gap-1.5 text-xs font-mono bg-terminal-accent/5 px-2.5 py-1 rounded border border-terminal-accent/10 hover:border-terminal-accent/40"
                                       >
                                         @{candidate.github} <ExternalLink size={12} />
                                       </a>
